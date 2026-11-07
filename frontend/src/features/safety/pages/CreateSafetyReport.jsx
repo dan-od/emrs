@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PageWrapper } from '@/components/layout';
 import { Card, CardHeader, CardTitle, CardContent, Input, Select, Textarea, Button } from '@/components/common';
 import { useSafetyActions } from '../hooks/useSafety';
@@ -25,11 +25,20 @@ const TYPE_CONFIG = {
   }
 };
 
+const VALID_TYPES = ['Incident', 'Hazard', 'Near_Miss'];
+const resolveType = (raw) => {
+  if (!raw) return null;
+  const lower = raw.toLowerCase();
+  return VALID_TYPES.find(t => t.toLowerCase() === lower) || null;
+};
+
 const CreateSafetyReport = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { addNotification } = useUiStore();
   const { createReport, isLoading } = useSafetyActions();
-  const [selectedType, setSelectedType] = useState(null);
+  const prefilledType = resolveType(searchParams.get('type'));
+  const [selectedType, setSelectedType] = useState(prefilledType);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -73,7 +82,9 @@ const CreateSafetyReport = () => {
         title: `${selectedType.replace('_', ' ')} at ${formData.location}`,
         description: formData.description,
         location: formData.location,
-        incidentDate: formData.incident_date ? new Date(formData.incident_date).toISOString() : null
+        incidentDate: formData.incident_date ? new Date(formData.incident_date).toISOString() : null,
+        actionsTaken: formData.actions_taken || undefined,
+        witnesses: formData.witnesses || undefined
       };
       
       await createReport(payload);
@@ -129,8 +140,8 @@ const CreateSafetyReport = () => {
           <Card>
             <CardHeader>
               <div className="flex items-center gap-3">
-                <button 
-                  onClick={() => setSelectedType(null)}
+                <button
+                  onClick={() => prefilledType ? navigate('/safety') : setSelectedType(null)}
                   className="p-1 hover:bg-gray-100 dark:hover:bg-white/10 rounded text-gray-600 dark:text-gray-400"
                 >
                   <ChevronLeft className="w-5 h-5" />

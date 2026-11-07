@@ -35,8 +35,8 @@ const findById = `
 `;
 
 const create = `
-  INSERT INTO safety_reports (reporter_id, type, severity, title, description, location, incident_date, is_anonymous)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+  INSERT INTO safety_reports (reporter_id, type, severity, title, description, location, incident_date, is_anonymous, actions_taken, witnesses)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
   RETURNING *
 `;
 

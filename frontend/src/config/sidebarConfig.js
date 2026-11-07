@@ -57,6 +57,7 @@ export const getAdminSidebar = () => [
     { path: '/requests/dept', label: 'Dept Requests' },
     { path: '/requests/all', label: 'All Requests' }
   ]},
+  createNavItem('/safety', 'Safety Reports', AlertTriangle),
   createDivider('Administration'),
   createNavItem('/users', 'User Management', Users),
   createNavItem('/activity', 'Activity Logs', History),
@@ -71,6 +72,7 @@ export const getManagerSidebar = () => [
     { path: '/requests/my', label: 'My Requests' },
     { path: '/requests/dept', label: 'Dept Requests' }
   ]},
+  createNavItem('/safety', 'Safety Reports', AlertTriangle),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -82,6 +84,7 @@ export const getStaffSidebar = () => [
     { path: '/requests', label: 'Request Hub' },
     { path: '/requests/my', label: 'My Requests' }
   ]},
+  createNavItem('/safety', 'Safety Reports', AlertTriangle),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -94,6 +97,7 @@ export const getITSupportSidebar = () => [
     { path: '/requests', label: 'Request Hub' },
     { path: '/requests/my', label: 'My Requests' }
   ]},
+  createNavItem('/safety', 'Safety Reports', AlertTriangle),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -114,6 +118,7 @@ export const getPurchasingStaffSidebar = () => [
   createDivider('Procurement'),
   createNavItem('/purchasing/vendors', 'Vendors', Store),
   createNavItem('/purchasing/vehicles', 'Vehicles', Truck),
+  createNavItem('/safety', 'Safety Reports', AlertTriangle),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -135,6 +140,7 @@ export const getPurchasingManagerSidebar = () => [
   createDivider('Procurement'),
   createNavItem('/purchasing/vendors', 'Vendors', Store),
   createNavItem('/purchasing/vehicles', 'Vehicles', Truck),
+  createNavItem('/safety', 'Safety Reports', AlertTriangle),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -151,6 +157,7 @@ export const getAccountsManagerSidebar = () => [
   createDivider('Assets'),
   createNavItem('/equipment', 'Asset Register', Package), // Updated label
   createNavItem('/maintenance', 'Work Orders', Wrench),
+  createNavItem('/safety', 'Safety Reports', AlertTriangle),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -166,6 +173,7 @@ export const getAccountsStaffSidebar = () => [
   createDivider('Assets'),
   createNavItem('/equipment', 'Asset Register', Package), // Updated label
   createNavItem('/maintenance', 'Work Orders', Wrench),
+  createNavItem('/safety', 'Safety Reports', AlertTriangle),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -211,6 +219,7 @@ export const getITManagerSidebar = () => [
     { path: '/requests/my', label: 'My Requests' },
     { path: '/requests/dept', label: 'Dept Requests' }
   ]},
+  createNavItem('/safety', 'Safety Reports', AlertTriangle),
   createDivider('Administration'),
   createNavItem('/users', 'User Management', Users),
   createNavItem('/activity', 'Activity Logs', History),

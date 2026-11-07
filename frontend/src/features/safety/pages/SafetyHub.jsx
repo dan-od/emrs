@@ -42,7 +42,7 @@ const SafetyHub = () => {
       actions={
         <Button variant="danger" onClick={() => navigate('/safety/new')}>
           <Plus className="w-4 h-4 mr-2" />
-          Report Incident
+          New Report
         </Button>
       }
     >

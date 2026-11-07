@@ -65,10 +65,10 @@ const SafetyReportDetail = () => {
                   <AlertTriangle className={`w-6 h-6 ${severityColor.text}`} />
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold text-text-primary">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                     {reportType.replace('_', ' ')} Report
                   </h2>
-                  <p className="text-sm text-text-muted">ID: {report.id}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">ID: {report.id}</p>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -90,14 +90,14 @@ const SafetyReportDetail = () => {
             </div>
 
             <PageSection title="Description">
-              <p className="text-text-secondary whitespace-pre-wrap">
+              <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap">
                 {report.description}
               </p>
             </PageSection>
 
             {report.actions_taken && (
               <PageSection title="Immediate Actions Taken" className="mt-4">
-                <p className="text-text-secondary whitespace-pre-wrap">
+                <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap">
                   {report.actions_taken}
                 </p>
               </PageSection>
@@ -105,13 +105,13 @@ const SafetyReportDetail = () => {
 
             {report.witnesses && (
               <PageSection title="Witnesses" className="mt-4">
-                <p className="text-text-secondary">{report.witnesses}</p>
+                <p className="text-gray-600 dark:text-gray-300">{report.witnesses}</p>
               </PageSection>
             )}
 
             {canUpdateStatus && (
               <div className="mt-6 pt-6 border-t border-border-light">
-                <h3 className="text-sm font-medium text-text-primary mb-3">Update Status</h3>
+                <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-3">Update Status</h3>
                 <div className="flex flex-col-reverse sm:flex-row gap-3">
                   {report.status === 'Open' && (
                     <Button
@@ -143,8 +143,8 @@ const SafetyReportDetail = () => {
         {report.investigation_notes && (
           <Card>
             <CardContent className="p-6">
-              <h3 className="font-medium text-text-primary mb-4">Investigation Notes</h3>
-              <p className="text-text-secondary whitespace-pre-wrap">
+              <h3 className="font-medium text-gray-900 dark:text-white mb-4">Investigation Notes</h3>
+              <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap">
                 {report.investigation_notes}
               </p>
             </CardContent>
@@ -157,10 +157,10 @@ const SafetyReportDetail = () => {
 
 const InfoItem = ({ icon: Icon, label, value }) => (
   <div className="flex items-start gap-2">
-    <Icon className="w-4 h-4 text-text-muted mt-0.5" />
+    <Icon className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-0.5" />
     <div>
-      <p className="text-xs text-text-muted">{label}</p>
-      <p className="text-sm text-text-primary">{value || '-'}</p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
+      <p className="text-sm text-gray-900 dark:text-gray-100">{value || '-'}</p>
     </div>
   </div>
 );

@@ -28,11 +28,12 @@ const getMyReports = async (userId, filters = {}) => {
 };
 
 const create = async (data) => {
-  const { reporterId, type, severity, title, description, location, incidentDate, isAnonymous } = data;
-  
+  const { reporterId, type, severity, title, description, location, incidentDate, isAnonymous, actionsTaken, witnesses } = data;
+
   return await transaction(async (client) => {
     const result = await client.query(queries.create, [
-      isAnonymous ? null : reporterId, type, severity, title, description, location, incidentDate, isAnonymous
+      isAnonymous ? null : reporterId, type, severity, title, description, location, incidentDate, isAnonymous,
+      actionsTaken || null, witnesses || null
     ]);
     
     const report = result.rows[0];

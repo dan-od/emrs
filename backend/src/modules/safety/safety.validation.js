@@ -8,7 +8,9 @@ const create = z.object({
     description: z.string().min(1, 'Description is required'),
     location: z.string().min(1, 'Location is required'),
     incidentDate: z.string().datetime().optional(),
-    isAnonymous: z.boolean().optional()
+    isAnonymous: z.boolean().optional(),
+    actionsTaken: z.string().optional(),
+    witnesses: z.string().optional()
   })
 });
 
