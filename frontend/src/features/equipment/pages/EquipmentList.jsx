@@ -46,10 +46,19 @@ const CAN_REVIEW_REQUESTS = [
 
 const EquipmentList = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const user = useAuthStore(s => s.user);
-  
-  const [category, setCategory] = useState('');
+
+  // Tab state lives in the URL (?category=TOOL|EQUIPMENT) so it survives
+  // refresh, back/forward and deep links.
+  const category = searchParams.get('category') || '';
+  const setCategory = (key) => setSearchParams((prev) => {
+    const next = new URLSearchParams(prev);
+    if (key) next.set('category', key);
+    else next.delete('category');
+    return next;
+  }, { replace: true });
+
   const [filters, setFilters] = useState({ search: '', status: '', type: '', department: '' });
   
   const showMaintenanceOnly = searchParams.get('maintenance') === 'due';

@@ -165,9 +165,16 @@ const create = async (data, user) => {
     ? (data.owningDepartment || user.department)
     : user.department; // Non-purchasing users can only add to their own dept
 
+  // serial_number is NOT NULL + UNIQUE in the schema, but the API treats it as
+  // optional. Generate a collision-resistant placeholder when the caller omits
+  // it so equipment without a known serial can still be registered.
+  const serialNumber = (data.serialNumber && data.serialNumber.trim())
+    ? data.serialNumber.trim()
+    : `AUTO-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+
   const result = await query(queries.create, [
     data.name,
-    data.serialNumber || null,
+    serialNumber,
     data.assetCategory,
     data.type,
     data.status || 'Available',

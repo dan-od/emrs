@@ -6,7 +6,7 @@
 import {
   LayoutDashboard, FileText, Package, Briefcase, Wrench,
   Users, AlertTriangle, History,
-  Boxes, Store, Truck, ClipboardList, AlertOctagon, BookOpen
+  Boxes, Store, Truck, ClipboardList, AlertOctagon, BookOpen, BarChart3
 } from 'lucide-react';
 
 const createNavItem = (path, label, icon, children = null) => ({
@@ -29,11 +29,12 @@ export const getSuperAdminSidebar = () => [
     { path: '/requests/dept', label: 'Dept Requests' },
     { path: '/requests/all', label: 'All Requests' }
   ]},
-  createDivider('In Development'),
+  createDivider('Operations'),
   createNavItem('/jobs', 'Jobs', Briefcase),
   createNavItem('/jobs/purchasing-queue', 'Purchasing Queue', ClipboardList),
   createNavItem('/maintenance', 'Maintenance', Wrench),
   createNavItem('/safety', 'Safety Reports', AlertTriangle),
+  createNavItem('/field-reports', 'Field Reports', FileText),
   createDivider('Purchasing'),
   createNavItem('/purchasing', 'Dashboard', Package),
   createNavItem('/purchasing/inventory', 'Inventory', Boxes),
@@ -42,6 +43,8 @@ export const getSuperAdminSidebar = () => [
   createNavItem('/purchasing/vehicles', 'Vehicles', Truck),
   createDivider('Finance'),
   createNavItem('/accounts', 'Asset Ledger', BookOpen),
+  createDivider('Insights'),
+  createNavItem('/reports', 'Reports', BarChart3),
   createDivider('Administration'),
   createNavItem('/users', 'User Management', Users),
   createNavItem('/activity', 'Activity Logs', History),
@@ -58,6 +61,8 @@ export const getAdminSidebar = () => [
     { path: '/requests/all', label: 'All Requests' }
   ]},
   createNavItem('/safety', 'Safety Reports', AlertTriangle),
+  createDivider('Insights'),
+  createNavItem('/reports', 'Reports', BarChart3),
   createDivider('Administration'),
   createNavItem('/users', 'User Management', Users),
   createNavItem('/activity', 'Activity Logs', History),
@@ -66,6 +71,7 @@ export const getAdminSidebar = () => [
 export const getManagerSidebar = () => [
   createNavItem('/dashboard', 'Dashboard', LayoutDashboard),
   createNavItem('/equipment', 'Department Assets', Package), // Updated label
+  createNavItem('/jobs', 'Jobs', Briefcase),
   createNavItem('/maintenance', 'Work Orders', Wrench),
   { path: '/requests', label: 'Requests', icon: FileText, children: [
     { path: '/requests', label: 'Request Hub' },
@@ -73,6 +79,8 @@ export const getManagerSidebar = () => [
     { path: '/requests/dept', label: 'Dept Requests' }
   ]},
   createNavItem('/safety', 'Safety Reports', AlertTriangle),
+  createNavItem('/field-reports', 'Field Reports', FileText),
+  createNavItem('/reports', 'Reports', BarChart3),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -85,6 +93,23 @@ export const getStaffSidebar = () => [
     { path: '/requests/my', label: 'My Requests' }
   ]},
   createNavItem('/safety', 'Safety Reports', AlertTriangle),
+  createNavItem('/activity', 'Activity Logs', History),
+];
+
+// Field Engineers get everything Staff do, plus Jobs (they are in JOBS_ROLES).
+// Kept separate so generic Staff/Operator/Technician do not see a Jobs link
+// they cannot open.
+export const getFieldEngineerSidebar = () => [
+  createNavItem('/dashboard', 'Dashboard', LayoutDashboard),
+  createNavItem('/equipment', 'Field Equipment', Package),
+  createNavItem('/jobs', 'Jobs', Briefcase),
+  createNavItem('/maintenance', 'Work Orders', Wrench),
+  { path: '/requests', label: 'Requests', icon: FileText, children: [
+    { path: '/requests', label: 'Request Hub' },
+    { path: '/requests/my', label: 'My Requests' }
+  ]},
+  createNavItem('/safety', 'Safety Reports', AlertTriangle),
+  createNavItem('/field-reports', 'Field Reports', FileText),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -110,6 +135,7 @@ export const getPurchasingStaffSidebar = () => [
   ]},
   createDivider('Fulfillment'),
   createNavItem('/purchasing', 'Process Requests', Package),
+  createNavItem('/jobs/purchasing-queue', 'Jobs Queue', ClipboardList),
   createNavItem('/maintenance', 'Work Orders', Wrench),
   createDivider('Assets'),
   createNavItem('/purchasing/inventory', 'Inventory', Boxes),
@@ -132,6 +158,7 @@ export const getPurchasingManagerSidebar = () => [
   ]},
   createDivider('Fulfillment'),
   createNavItem('/purchasing', 'Process Requests', Package),
+  createNavItem('/jobs/purchasing-queue', 'Jobs Queue', ClipboardList),
   createNavItem('/maintenance', 'Work Orders', Wrench),
   createDivider('Assets'),
   createNavItem('/purchasing/inventory', 'Inventory', Boxes),
@@ -141,6 +168,7 @@ export const getPurchasingManagerSidebar = () => [
   createNavItem('/purchasing/vendors', 'Vendors', Store),
   createNavItem('/purchasing/vehicles', 'Vehicles', Truck),
   createNavItem('/safety', 'Safety Reports', AlertTriangle),
+  createNavItem('/reports', 'Reports', BarChart3),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -158,6 +186,7 @@ export const getAccountsManagerSidebar = () => [
   createNavItem('/equipment', 'Asset Register', Package), // Updated label
   createNavItem('/maintenance', 'Work Orders', Wrench),
   createNavItem('/safety', 'Safety Reports', AlertTriangle),
+  createNavItem('/reports', 'Reports', BarChart3),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -207,6 +236,7 @@ export const getSafetyManagerSidebar = () => [
   createDivider('Assets'),
   createNavItem('/equipment', 'Department Assets', Package),
   createNavItem('/maintenance', 'Work Orders', Wrench),
+  createNavItem('/reports', 'Reports', BarChart3),
   createNavItem('/activity', 'Activity Logs', History),
 ];
 
@@ -220,6 +250,8 @@ export const getITManagerSidebar = () => [
     { path: '/requests/dept', label: 'Dept Requests' }
   ]},
   createNavItem('/safety', 'Safety Reports', AlertTriangle),
+  createDivider('Insights'),
+  createNavItem('/reports', 'Reports', BarChart3),
   createDivider('Administration'),
   createNavItem('/users', 'User Management', Users),
   createNavItem('/activity', 'Activity Logs', History),
@@ -242,6 +274,7 @@ export const getSidebarByRole = (role) => {
   if (role === 'Accounts_Staff') return getAccountsStaffSidebar();
   if (role === 'Safety_Manager') return getSafetyManagerSidebar();
   if (role === 'Safety_Officer') return getSafetyOfficerSidebar();
+  if (role === 'Field_Engineer') return getFieldEngineerSidebar();
   if (role.includes('Manager')) return getManagerSidebar();
 
   return getStaffSidebar();

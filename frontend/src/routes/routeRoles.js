@@ -37,3 +37,20 @@ export const SAFETY_ROLES = [
 ];
 
 export const DEV_PREVIEW_ROLES = [ROLES.SUPER_ADMIN];
+
+// Field Reports — who may submit one (matches field-reports.routes.js create).
+// Viewing the list/detail is open to any authenticated user (backend filters).
+export const FIELD_REPORT_CREATE_ROLES = [
+  ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.IT_SUPPORT,
+  ROLES.OPERATIONS_MANAGER, ROLES.MAINTENANCE_MANAGER,
+  ROLES.FIELD_ENGINEER, ROLES.SAFETY_OFFICER
+];
+
+// Jobs module — launched. Operational roles that create/run jobs.
+// (DB enum has Department_Manager but the frontend ROLES map omits it, so it
+//  is not listed here.)
+export const JOBS_ROLES = [
+  ROLES.SUPER_ADMIN, ROLES.ADMIN,
+  ROLES.OPERATIONS_MANAGER, ROLES.MAINTENANCE_MANAGER,
+  ROLES.WORKSHOP_MANAGER, ROLES.FIELD_ENGINEER
+];

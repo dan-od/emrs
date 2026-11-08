@@ -104,7 +104,20 @@ export const PURCHASING = {
 export const FIELD_REPORTS = {
   BASE: '/field-reports',
   BY_ID: (id) => `/field-reports/${id}`,
-  REVIEW: (id) => `/field-reports/${id}/review`
+  MY: '/field-reports/my',
+  STATS: '/field-reports/stats',
+  PENDING: '/field-reports/pending',
+  REVIEW: (id) => `/field-reports/${id}/review`,
+  APPROVE: (id) => `/field-reports/${id}/approve`,
+  REJECT: (id) => `/field-reports/${id}/reject`
+};
+
+// Notifications endpoints
+export const REPORTS = {
+  REQUEST_ANALYTICS: '/reports/request-analytics',
+  SAFETY_OVERVIEW: '/reports/safety-overview',
+  EQUIPMENT_UTILIZATION: '/reports/equipment-utilization',
+  MAINTENANCE_COSTS: '/reports/maintenance-costs'
 };
 
 // Notifications endpoints

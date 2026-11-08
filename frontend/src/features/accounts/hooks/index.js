@@ -11,3 +11,5 @@ export {
   useCostsByVendor,
   useServiceBreakdown
 } from './useAccounts';
+
+export { useWorkOrderExport } from './useWorkOrderExport';

@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { SWRConfig } from 'swr';
-import { Toaster } from 'react-hot-toast';
 import { apiGet } from '@/services/api';
 import { initSentry } from '@/utils/sentry';
 import App from './App';
@@ -28,24 +27,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <SWRConfig value={swrConfig}>
+        {/* Toasts render via <ToastContainer/> in App.jsx, backed by the ui store. */}
         <App />
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#fff',
-              color: '#2C3E50',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
-            },
-            success: {
-              iconTheme: { primary: '#2ECC71', secondary: '#fff' }
-            },
-            error: {
-              iconTheme: { primary: '#E74C3C', secondary: '#fff' }
-            }
-          }}
-        />
       </SWRConfig>
     </BrowserRouter>
   </React.StrictMode>

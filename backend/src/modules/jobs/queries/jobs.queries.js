@@ -140,9 +140,50 @@ const getUserRole = `
   LIMIT 1
 `;
 
+// ─── Write path ──────────────────────────────────────────────────────────────
+// Added to make job creation work end-to-end. job_number format is JOB-YYYY-####,
+// sequential within the calendar year. The count-based sequence has a benign
+// race under concurrent inserts; job_number carries a UNIQUE constraint so a
+// collision fails loudly rather than duplicating.
+const generateNumber = `
+  SELECT 'JOB-' || to_char(NOW(), 'YYYY') || '-' ||
+         LPAD((COUNT(*) + 1)::text, 4, '0') AS job_number
+  FROM jobs
+  WHERE job_number LIKE 'JOB-' || to_char(NOW(), 'YYYY') || '-%'
+`;
+
+const create = `
+  INSERT INTO jobs (
+    job_number, client, well_name, location, description,
+    start_date, expected_end_date, priority,
+    special_requirements, safety_considerations, created_by
+  )
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+  RETURNING *
+`;
+
+// COALESCE keeps existing values when the update payload omits a field
+// (updateJobSchema marks every field optional).
+const update = `
+  UPDATE jobs SET
+    client                = COALESCE($2, client),
+    well_name             = COALESCE($3, well_name),
+    location              = COALESCE($4, location),
+    description           = COALESCE($5, description),
+    start_date            = COALESCE($6, start_date),
+    expected_end_date     = COALESCE($7, expected_end_date),
+    priority              = COALESCE($8, priority),
+    special_requirements  = COALESCE($9, special_requirements),
+    safety_considerations = COALESCE($10, safety_considerations),
+    updated_at            = NOW()
+  WHERE id = $1
+  RETURNING *
+`;
+
 module.exports = {
   findAll, countAll,
   findMyJobs, countMyJobs,
   findById, getStats,
   isTeamMember, isSupervisor, getUserRole,
+  generateNumber, create, update,
 };

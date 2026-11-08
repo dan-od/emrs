@@ -11,21 +11,22 @@
 
 ## MVP Scope — What's Launching
 
-### In MVP
+### In MVP — EVERYTHING SHIPS (Launch Readiness Sprint, Nov 8, 2026)
 - **Auth** — Login, JWT sessions, role-based routing
 - **Requests** — PPE, Material, Transport, Equipment, Maintenance request creation and approval workflows
 - **Maintenance workflow** — Engineer → Manager → Purchasing → Work Order (multi-step approval)
 - **Purchasing** — Disbursement of approved requests, inventory linking
-- **Equipment** — Tracking, status management
+- **Equipment** — Tracking, status management, **Tool/Equipment categorization** (via `asset_category` enum)
+- **Jobs** — Full lifecycle (create → approve → start → post-job → complete) + purchasing queue. Launched to operational roles (was Super_Admin preview).
+- **Field Reports** — `modules/field-reports/` backend + `features/field-reports/` frontend (list/detail/create/review/approve/reject).
+- **Vehicles** — Live, CRUD, in purchasing sidebar.
+- **Reports/Analytics** — `modules/reports/` backend + `features/reports/` frontend (Equipment Utilization, Request Analytics, Maintenance Costs, Safety Overview) with recharts.
 - **Dashboards** — Role-based (Engineer, Manager, Admin, Purchasing, Accounts, Safety)
-- **Notifications** — In-app + SMS via Termii
+- **Notifications** — In-app (live). SMS via Termii = LAST item (not yet wired live).
 - **Activity Logs** — System-wide audit trail
 
-### NOT in MVP (do not fix or touch)
-- **Jobs module** — `features/jobs/`, `modules/jobs/` — not launching
-- **Field Reports** — `modules/fieldReports/` — not launching
-- **Vehicles module** — deferred
-- **Reports/Analytics** — deferred
+### Deferred — ONLY remaining item
+- **Termii SMS / email delivery** — wire last. In-app notifications work; SMS/email providers not yet configured (`SMS_ENABLED=false`).
 
 ---
 
@@ -194,19 +195,66 @@ Engineer creates → Pending → Manager approves (adds cost estimate, notes, ve
 | B5 | Error boundaries — ErrorBoundary already existed + wired to App.jsx; added content-level boundary to MainLayout (sidebar survives route errors) |
 | BUG-ACTIVITY-NULL | equipmentLogs.controller.js createGeneralLog: ACTIONS.CREATE (undefined) → ACTIONS.EQUIPMENT_HOURS_LOGGED; added null guard in logActivity |
 
+### 🔍 FEATURE AUDIT — Nov 7, 2026 (code-level, investigate-only; NOT run live)
+
+Full audit of Accounts, Jobs, Safety, Vehicles, Field Reports, dead code, post-MVP items.
+**No 🔴 BROKEN crashers found** — this tree already contains the Build-Pass-1 safety/jobs/maintenance fixes.
+Could not run live (no EMRS `.env`/DB present; only an unrelated `supabase_db_wta-site` container was up and left untouched).
+
+**Already DONE despite being listed post-MVP above (table below is corrected):**
+- N4 Rate limiting — `backend/src/middleware/rateLimiter.js` (apiLimiter 500/win on `/api`, authLimiter 10/hr, passwordResetLimiter 3/hr), applied in `app.js`.
+- 3.5 Notification auto-refresh — `useNotifications.js` SWR `refreshInterval`.
+- 4.4 PWA icons — `frontend/public/` has pwa-192/512 + apple-touch-icon; `vite.config.js` manifest wired (verify they're real WFSL icons, not placeholders).
+- 3.1 Activity log pagination+filters — `ActivityLogs.jsx` has filters + page/handlePageChange; backend returns `{page,totalPages,total}`.
+
+**Confirmed working (no action):** Safety new fields `actions_taken`/`witnesses` fully wired form→validation→query→detail; migration `003_safety_report_fields.sql` applies clean vs 001 (both IF NOT EXISTS). Accounts API paths match backend exactly. `safety.zip` already removed.
+
+**Prioritized fix list (awaiting user's go-ahead — do NOT auto-start):**
+
+| Pri | Class | Item |
+|-----|-------|------|
+| 1 | 🟢 POLISH | Delete dead files: purchasing `features/purchasing/components/DisburseModal.jsx` (361 ln, no importer; live one is `DisburseModalV2.jsx`) + its only-consumer `ItemLinkingTableWithConsumable.jsx`; accounts `features/accounts/components/PaymentRecordModal.jsx` (185 ln, zero importers; live one is `RecordPaymentModal.jsx`). NOTE: `jobs/pages/purchasing/DisburseModal.jsx` is a SEPARATE live file — do not touch. |
+| 2 | 🟢 POLISH | Consolidate toasts onto `useUiStore` (17 importers); migrate 3 `react-hot-toast` sites (`main.jsx` Toaster, `services/api.js`, `useAuth.js`), drop `<Toaster>` + dep. |
+| 3 | 🟢 POLISH | Fix stale post-MVP table (done below). |
+| 4 | 🟢 POLISH | Split over-limit files: `AccountsDashboard.jsx` (192 ln > 150) and `useAccounts.js` (231 ln, 7 hooks in one file > 80). Also `console.error` calls in AccountsDashboard/useAccounts (CLAUDE.md bans console in prod). |
+| 5 | 🟡 DECISION | Vehicles is LIVE + in sidebar (3 role variants) + routed `/purchasing/vehicles`, despite "deferred" label. Keep exposed or gate/hide? |
+| 6 | 🟡 DECISION | Jobs fully wired end-to-end (status flow submit→approve→start→post-job→complete + purchasing queue) but gated `DEV_PREVIEW_ROLES` (Super_Admin only). Widen access or keep preview-gated? |
+| 7 | ⚪ DEFER | Field Reports — backend complete (list/stats/my/pending/create/review/approve/reject/attachments, Submitted→Approved/Rejected), ZERO frontend. Per MVP = defer; ready to build UI against when wanted. |
+
+### ✅ DONE — LAUNCH READINESS SPRINT (Nov 8, 2026)
+
+Ran the full 9-phase launch sprint. App runs locally (Postgres container, migrations 001-003, seed; backend :5001 — moved off :5000 which macOS ControlCenter owns; frontend :3000). Final `npm run build` passes clean; Super_Admin smoke = 19/19 modules.
+
+**Backend bug fixes (Phase 3 — found via live verification):**
+- `equipment.service.js` — `serial_number` is NOT NULL + UNIQUE but validation marks it optional → now auto-generates a unique `AUTO-<ts>-<rand>` placeholder when omitted (was a 500 crasher).
+- `jobs/queries/jobs.queries.js` — job `create`/`update`/`generateNumber` were deliberately absent (read-only rewrite) → job creation 500'd. Added them; job_number format `JOB-YYYY-####`.
+- `field-reports.routes.js` — added `Super_Admin` to every `requireRoles` list (was omitted everywhere; `requireRoles` has no Super_Admin bypass).
+
+**Phase 4 — Jobs launched:** `JOBS_ROLES` (Super_Admin, Admin, Operations/Maintenance/Workshop Manager, Field_Engineer) replaces `DEV_PREVIEW_ROLES` in `jobsRoutes.jsx`. Sidebar: Jobs added to manager + new Field Engineer sidebar; "In Development" divider → "Operations"; Jobs/Purchasing Queue exposed. NOTE: `Department_Manager` is in the DB enum but NOT the frontend `ROLES` map — not granted.
+
+**Phase 5 — Equipment categorization:** Uses the EXISTING `asset_category` enum (TOOL/EQUIPMENT) — NO new `category` column/migration (would have duplicated). Frontend was mostly pre-built; added URL-param tab state (`?category=`) + category badge on `EquipmentCard`.
+
+**Phase 6 — Field Reports frontend:** `features/field-reports/` (list/detail/create + `useFieldReports` + service + FieldReportCard/StatusBadge/ReviewActions). Routes + sidebar (Super_Admin, managers, engineers). Lifecycle verified create→review→approve.
+
+**Phase 7 — Reports & Analytics:** NEW backend `modules/reports/` (request-analytics, safety-overview, equipment-utilization, maintenance-costs — gated to manager/admin roles, reuses accounts cost queries). NEW frontend `features/reports/` (Hub + 4 pages) using **recharts** (installed). Sidebar for all MANAGER_ROLES. NOTE: no `ReportFilters` component — the roll-up endpoints take no filters, so it would be a dead control.
+
+**Phase 8 — Cleanup:** Deleted dead files (`purchasing/DisburseModal.jsx` [live=DisburseModalV2], `ItemLinkingTableWithConsumable.jsx`, `accounts/PaymentRecordModal.jsx` [live=RecordPaymentModal]). Toasts consolidated onto `useUiStore` (migrated main.jsx/api.js/useAuth.js; `react-hot-toast` uninstalled). Split `useAccounts.js` (231→ 4 files <80) and `AccountsDashboard.jsx` (192→92) + extracted `WorkOrderList`/`useWorkOrderExport`; removed all `console.error`.
+
+**Dev note:** seeded users ship with `must_change_password=true` — cleared in the local DB for testing. Accounts users exist (`accounts.manager@wellfluid.com` etc., pw `password123`).
+
 ### ⬜ POST-MVP — Don't Touch Now
 | Task | Description |
 |------|-------------|
-| 3.1 | Activity log pagination count with filters |
-| 3.5 | Auto-refresh notification list |
+| 3.1 | ~~Activity log pagination count with filters~~ — DONE (audit Nov 7, 2026) |
+| 3.5 | ~~Auto-refresh notification list~~ — DONE (SWR refreshInterval) |
 | 3.7 | Persist top-level request notes to DB |
-| 4.2 | Remove duplicate toast system |
-| 4.3 | Seed accounts test users |
-| 4.4 | PWA icons |
+| 4.2 | ~~Remove duplicate toast system~~ — DONE (Launch sprint, Nov 8) |
+| 4.3 | Seed accounts test users — accounts users exist; ensure in seed proper |
+| 4.4 | ~~PWA icons~~ — DONE (verify not placeholders) |
 | 5.1-5.5 | Refactoring, error boundaries, skeletons |
 | N2 | Job status enum (NOT IN MVP) |
-| N3 | User role enum gaps |
-| N4 | Rate limiting |
+| N3 | User role enum gaps — `Department_Manager` missing from frontend ROLES |
+| N4 | ~~Rate limiting~~ — DONE (rateLimiter.js) |
 | N5 | Transaction wrapping |
 | N6 | Field report permissions (NOT IN MVP) |
 | N8 | Equipment status format |

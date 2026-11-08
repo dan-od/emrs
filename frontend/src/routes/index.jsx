@@ -12,6 +12,8 @@ import { safetyRoutes } from './groups/safetyRoutes';
 import { jobsRoutes } from './groups/jobsRoutes';
 import { purchasingRoutes } from './groups/purchasingRoutes';
 import { userRoutes } from './groups/userRoutes';
+import { fieldReportRoutes } from './groups/fieldReportRoutes';
+import { reportsRoutes } from './groups/reportsRoutes';
 
 export const PublicRoutes = () => (
   <Routes>
@@ -32,6 +34,8 @@ export const AppRoutes = () => (
         {maintenanceRoutes}
         {safetyRoutes}
         {jobsRoutes}
+        {fieldReportRoutes}
+        {reportsRoutes}
         {purchasingRoutes}
         {userRoutes}
       </Route>

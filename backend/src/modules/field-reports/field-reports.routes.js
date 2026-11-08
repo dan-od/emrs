@@ -23,7 +23,7 @@ router.get('/my', fieldReportsController.getMyReports);
 // Get pending review (managers)
 router.get(
   '/pending',
-  requireRoles(['Admin', 'IT_Support', 'Operations_Manager', 'Maintenance_Manager', 'Safety_Officer']),
+  requireRoles(['Super_Admin', 'Admin', 'IT_Support', 'Operations_Manager', 'Maintenance_Manager', 'Safety_Officer']),
   fieldReportsController.getPendingReview
 );
 
@@ -36,7 +36,7 @@ router.get('/:id', fieldReportsController.getById);
 // Create field report (Field Engineers and above)
 router.post(
   '/',
-  requireRoles(['Admin', 'IT_Support', 'Operations_Manager', 'Maintenance_Manager', 'Field_Engineer', 'Safety_Officer']),
+  requireRoles(['Super_Admin', 'Admin', 'IT_Support', 'Operations_Manager', 'Maintenance_Manager', 'Field_Engineer', 'Safety_Officer']),
   validate(createSchema),
   fieldReportsController.create
 );
@@ -51,7 +51,7 @@ router.put(
 // Review report (managers only)
 router.post(
   '/:id/review',
-  requireRoles(['Admin', 'IT_Support', 'Operations_Manager', 'Maintenance_Manager', 'Safety_Officer']),
+  requireRoles(['Super_Admin', 'Admin', 'IT_Support', 'Operations_Manager', 'Maintenance_Manager', 'Safety_Officer']),
   validate(reviewSchema),
   fieldReportsController.review
 );
@@ -59,14 +59,14 @@ router.post(
 // Approve report
 router.post(
   '/:id/approve',
-  requireRoles(['Admin', 'IT_Support', 'Operations_Manager', 'Maintenance_Manager']),
+  requireRoles(['Super_Admin', 'Admin', 'IT_Support', 'Operations_Manager', 'Maintenance_Manager']),
   fieldReportsController.approve
 );
 
 // Reject report
 router.post(
   '/:id/reject',
-  requireRoles(['Admin', 'IT_Support', 'Operations_Manager', 'Maintenance_Manager']),
+  requireRoles(['Super_Admin', 'Admin', 'IT_Support', 'Operations_Manager', 'Maintenance_Manager']),
   fieldReportsController.reject
 );
 

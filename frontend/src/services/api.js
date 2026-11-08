@@ -4,8 +4,12 @@
  */
 
 import axios from 'axios';
-import toast from 'react-hot-toast';
 import { useAuthStore } from '@/store/authStore';
+import { useUiStore } from '@/store/uiStore';
+
+// Imperative toast for use outside React (interceptors). ToastContainer in
+// App.jsx renders these from the ui store.
+const notify = (type, message) => useUiStore.getState().addNotification({ type, message });
 
 // Create axios instance - Backend runs on port 5000
 const api = axios.create({
@@ -22,7 +26,7 @@ api.interceptors.request.use(
   (config) => {
     const isMutation = ['post', 'put', 'patch', 'delete'].includes(config.method?.toLowerCase());
     if (isMutation && !navigator.onLine) {
-      toast('Request queued — will sync when connection returns.', { icon: '📶' });
+      notify('info', 'Request queued — will sync when connection returns.');
       return Promise.reject(new Error('offline'));
     }
 
@@ -105,9 +109,9 @@ api.interceptors.response.use(
     }
 
     if (status === 502 || status === 503) {
-      toast.error('Service temporarily unavailable. Please try again in a moment.');
+      notify('error', 'Service temporarily unavailable. Please try again in a moment.');
     } else if (status >= 500) {
-      toast.error('A server error occurred. Please try again shortly.');
+      notify('error', 'A server error occurred. Please try again shortly.');
     }
 
     return Promise.reject(error);

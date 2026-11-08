@@ -23,6 +23,7 @@ const notificationsRoutes = require('../modules/notifications/notifications.rout
 const vehiclesRoutes = require('../modules/vehicles/vehicles.routes');
 const extensionsRoutes = require('../modules/extensions/extensions.routes');
 const accountsRoutes = require('../modules/accounts/accounts.routes');
+const reportsRoutes = require('../modules/reports/reports.routes');
 
 // Health check — verifies DB connectivity before returning 200
 router.get('/health', async (req, res) => {
@@ -50,5 +51,6 @@ router.use('/notifications', notificationsRoutes);
 router.use('/vehicles', vehiclesRoutes);
 router.use('/extensions', extensionsRoutes);
 router.use('/accounts', accountsRoutes);
+router.use('/reports', reportsRoutes);
 
 module.exports = router;

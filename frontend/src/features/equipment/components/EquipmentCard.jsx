@@ -46,6 +46,9 @@ export const EquipmentCard = memo(({ equipment, onClick }) => {
             <h3 className="font-semibold text-sm text-text-primary dark:text-dark-text truncate">
               {equipment.name}
             </h3>
+            <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-medium flex-shrink-0 ${iconBg} ${iconColor}`}>
+              {isTool ? 'Tool' : 'Equipment'}
+            </span>
             {isHidden && <EyeOff className="w-3.5 h-3.5 text-text-muted dark:text-dark-muted" />}
             {isShared && <Share2 className="w-3.5 h-3.5 text-green-500" />}
           </div>

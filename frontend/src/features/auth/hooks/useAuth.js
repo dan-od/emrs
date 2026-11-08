@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '../services/authService';
-import toast from 'react-hot-toast';
+import { useUiStore } from '@/store/uiStore';
+
+const notify = (type, message) => useUiStore.getState().addNotification({ type, message });
 
 export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +26,7 @@ export const useAuth = () => {
       storeLogin(user, token, refreshToken);
       
       const displayName = user.first_name || user.name || 'User';
-      toast.success(`Welcome back, ${displayName}!`);
+      notify('success', `Welcome back, ${displayName}!`);
       
       // Redirect to intended page or dashboard
       const from = location.state?.from?.pathname || '/dashboard';
@@ -34,7 +36,7 @@ export const useAuth = () => {
     } catch (err) {
       const message = err.response?.data?.message || 'Login failed. Please try again.';
       setError(message);
-      toast.error(message);
+      notify('error', message);
       throw err;
     } finally {
       setIsLoading(false);
@@ -49,7 +51,7 @@ export const useAuth = () => {
     } finally {
       storeLogout();
       navigate('/login', { replace: true });
-      toast.success('Logged out successfully');
+      notify('success', 'Logged out successfully');
     }
   };
 
@@ -59,12 +61,12 @@ export const useAuth = () => {
 
     try {
       await authService.forgotPassword(email);
-      toast.success('Password reset instructions sent to your email');
+      notify('success', 'Password reset instructions sent to your email');
       return true;
     } catch (err) {
       const message = err.response?.data?.message || 'Failed to send reset email';
       setError(message);
-      toast.error(message);
+      notify('error', message);
       throw err;
     } finally {
       setIsLoading(false);
@@ -77,13 +79,13 @@ export const useAuth = () => {
 
     try {
       await authService.resetPassword(token, password);
-      toast.success('Password reset successfully. Please login.');
+      notify('success', 'Password reset successfully. Please login.');
       navigate('/login', { replace: true });
       return true;
     } catch (err) {
       const message = err.response?.data?.message || 'Failed to reset password';
       setError(message);
-      toast.error(message);
+      notify('error', message);
       throw err;
     } finally {
       setIsLoading(false);
