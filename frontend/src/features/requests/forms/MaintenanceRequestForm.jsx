@@ -50,7 +50,7 @@ const MaintenanceRequestForm = ({ onSubmit, isLoading }) => {
         setVehicles(extractArray(vehicleRes, 'vehicles'));
         setVendors(extractArray(vendorRes, 'vendors'));
       } catch (error) {
-        console.error('Failed to load data:', error);
+        /* error handled silently */
       } finally {
         setLoadingData(false);
       }

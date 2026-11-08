@@ -10,7 +10,7 @@ const { authenticate, requireRoles } = require('../../middleware');
 // tied to the per-department gating the source endpoints use.
 const REPORT_ROLES = [
   'Super_Admin', 'Admin', 'IT_Manager',
-  'Operations_Manager', 'Maintenance_Manager', 'Purchasing_Manager',
+  'Operations_Manager', 'Department_Manager', 'Maintenance_Manager', 'Purchasing_Manager',
   'Accounts_Manager', 'Safety_Manager', 'Workshop_Manager',
   'Logistics_Manager', 'HR_Manager'
 ];

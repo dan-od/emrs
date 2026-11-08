@@ -39,7 +39,7 @@ export const NotificationBell = () => {
       try {
         await markAsRead(notification.id);
       } catch (err) {
-        console.error('Failed to mark as read:', err);
+        /* error handled silently */
       }
     }
     

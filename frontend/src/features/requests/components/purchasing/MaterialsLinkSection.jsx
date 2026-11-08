@@ -116,7 +116,7 @@ const MaterialsLinkSection = ({ request, materialLinks, onMaterialLink }) => {
         const data = res.data;
         setInventory(Array.isArray(data) ? data : data.data || data.items || []);
       } catch (err) {
-        console.error('Failed to fetch inventory:', err);
+        /* error handled silently */
       } finally {
         setLoading(false);
       }

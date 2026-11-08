@@ -109,7 +109,7 @@ export const PreInspectionModal = ({ jobId, item, onClose, onSuccess }) => {
           }
           if (draft.notes) setNotes(draft.notes);
         }
-      } catch (err) { console.error('Failed to load draft:', err); }
+      } catch (err) { /* error handled silently */ }
     };
     loadDraft();
     return () => { if (autosaveTimer.current) clearTimeout(autosaveTimer.current); };
@@ -126,7 +126,7 @@ export const PreInspectionModal = ({ jobId, item, onClose, onSuccess }) => {
         checklist_data: checklist, failed_items: failedItemsData, notes
       });
       setLastSaved(new Date());
-    } catch (err) { console.error('Autosave failed:', err); }
+    } catch (err) { /* error handled silently */ }
   }, [draftId, checklist, failedResolutions, notes, jobId]);
 
   // Trigger autosave on changes
@@ -163,7 +163,7 @@ export const PreInspectionModal = ({ jobId, item, onClose, onSuccess }) => {
       }));
       await submitInspection(jobId, item.id, { checklist_data: checklist, failed_items: failedItemsData, notes });
       onSuccess?.();
-    } catch (err) { console.error('Failed to submit inspection:', err); }
+    } catch (err) { /* error handled silently */ }
     finally { setSubmitting(false); }
   };
 

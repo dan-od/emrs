@@ -229,7 +229,7 @@ export const PendingEquipmentApprovals = () => {
       const res = await api.get('/jobs/equipment/pending-approval');
       setItems(res.data.items || []);
     } catch (err) {
-      console.error('Failed to fetch pending approvals:', err);
+      /* error handled silently */
       setError('Failed to load pending job requests');
     } finally {
       setLoading(false);
@@ -246,7 +246,7 @@ export const PendingEquipmentApprovals = () => {
       await api.post(`/jobs/equipment/${itemId}/manager-approve`, { notes });
       setItems(prev => prev.filter(i => i.id !== itemId));
     } catch (err) {
-      console.error('Failed to approve:', err);
+      /* error handled silently */
       alert('Failed to approve request');
     } finally {
       setProcessing(null);
@@ -259,7 +259,7 @@ export const PendingEquipmentApprovals = () => {
       await api.post(`/jobs/equipment/${itemId}/manager-reject`, { reason });
       setItems(prev => prev.filter(i => i.id !== itemId));
     } catch (err) {
-      console.error('Failed to reject:', err);
+      /* error handled silently */
       alert('Failed to reject request');
     } finally {
       setProcessing(null);

@@ -230,7 +230,7 @@ export const EquipmentMaterialsSection = memo(({
       await api.post(`/jobs/equipment/${itemId}/manager-approve`, { notes: '' });
       onRefresh?.();
     } catch (err) {
-      console.error('Failed to approve:', err);
+      /* error handled silently */
       alert(err.response?.data?.error || 'Failed to approve request');
     }
   };
@@ -240,7 +240,7 @@ export const EquipmentMaterialsSection = memo(({
       await api.post(`/jobs/equipment/${itemId}/manager-reject`, { reason });
       onRefresh?.();
     } catch (err) {
-      console.error('Failed to reject:', err);
+      /* error handled silently */
       alert(err.response?.data?.error || 'Failed to reject request');
     }
   };
@@ -276,7 +276,7 @@ export const EquipmentMaterialsSection = memo(({
       onRefresh?.();
       return true;
     } catch (err) {
-      console.error('Failed to submit material requests:', err);
+      /* error handled silently */
       alert(err.response?.data?.message || 'Failed to submit requests');
       return false;
     } finally {

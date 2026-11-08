@@ -198,7 +198,7 @@ export const storage = {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (e) {
-      console.error('Storage error:', e);
+      /* error handled silently */
     }
   },
   remove: (key) => localStorage.removeItem(key)

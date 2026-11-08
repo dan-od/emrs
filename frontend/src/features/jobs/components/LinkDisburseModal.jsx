@@ -70,7 +70,7 @@ const LinkDisburseModal = ({
         const res = await api.get('/jobs/materials/search-inventory', { params: { q: searchTerm } });
         setInventory(res.data);
       } catch (err) {
-        console.error('Search failed:', err);
+        /* error handled silently */
       } finally {
         setSearching(false);
       }

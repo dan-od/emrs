@@ -86,7 +86,7 @@ const DamagedInventoryPage = () => {
       setUpdateStatus('');
       setUpdateNotes('');
     } catch (error) {
-      console.error('Failed to update status:', error);
+      /* error handled silently */
       alert('Failed to update status');
     } finally {
       setIsUpdating(false);

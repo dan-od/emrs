@@ -205,7 +205,7 @@ export const ViewInspectionModal = ({ jobId, item, onClose, onRefresh }) => {
           setTemplate(tplRes.data.template);
         } catch (e) { /* Template not critical */ }
       } catch (err) { 
-        console.error('Failed to fetch inspection:', err); 
+        /* error handled silently */ 
       } finally { 
         setLoading(false); 
       }
@@ -220,7 +220,7 @@ export const ViewInspectionModal = ({ jobId, item, onClose, onRefresh }) => {
       setFailedItems(fiRes.data.failed_items || []);
       const inspRes = await api.get(`/jobs/${jobId}/items/${item.id}/inspections`);
       if (inspRes.data.inspections?.length > 0) setInspection(inspRes.data.inspections[0]);
-    } catch (err) { console.error('Failed to submit decision:', err); }
+    } catch (err) { /* error handled silently */ }
   };
 
   const handleSignOffAll = async () => {
@@ -229,7 +229,7 @@ export const ViewInspectionModal = ({ jobId, item, onClose, onRefresh }) => {
       await api.post(`/jobs/${jobId}/inspections/${inspection.id}/signoff`);
       onRefresh?.();
       onClose();
-    } catch (err) { console.error('Failed to sign off:', err); }
+    } catch (err) { /* error handled silently */ }
     finally { setSigningOff(false); }
   };
 

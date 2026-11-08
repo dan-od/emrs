@@ -49,7 +49,7 @@ export const StatusUpdateModal = ({ jobId, currentStatus, onClose, onSuccess }) 
       await updateStatus(jobId, newStatus, notes);
       onSuccess?.();
     } catch (err) {
-      console.error('Failed to update status:', err);
+      /* error handled silently */
     }
   };
 

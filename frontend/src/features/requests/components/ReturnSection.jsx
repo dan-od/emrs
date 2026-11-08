@@ -34,7 +34,7 @@ const ReturnSection = ({ request, onUpdate, isOwner }) => {
       setShowReturnModal(false);
       if (onUpdate) onUpdate();
     } catch (err) {
-      console.error('Failed to initiate return:', err);
+      /* error handled silently */
       alert(err.response?.data?.message || err.message || 'Failed to initiate return');
     } finally {
       setLoading(false);

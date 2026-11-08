@@ -38,7 +38,7 @@ export const MaintenanceAssetCard = ({ details, category }) => {
           }
         }
       } catch (error) {
-        console.error('Failed to fetch asset:', error);
+        /* error handled silently */
         setAssetName('Unknown');
       } finally {
         setLoadingAsset(false);

@@ -128,7 +128,7 @@ const PurchasingApprovalForm = ({ request, isOpen, onClose, onSuccess }) => {
       
       onSuccess?.();
     } catch (err) {
-      console.error('Action failed:', err);
+      /* error handled silently */
       addNotification({ 
         type: 'error', 
         message: err.response?.data?.message || 'Failed to process request' 
@@ -155,7 +155,7 @@ const PurchasingApprovalForm = ({ request, isOpen, onClose, onSuccess }) => {
       setShowRejectModal(false);
       onSuccess?.();
     } catch (err) {
-      console.error('Rejection failed:', err);
+      /* error handled silently */
       addNotification({ 
         type: 'error', 
         message: err.response?.data?.message || 'Failed to reject request' 

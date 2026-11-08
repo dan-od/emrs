@@ -75,7 +75,7 @@ const RequestMaterialModal = ({ isOpen, onClose, onSubmit, jobId, jobNumber, isL
             setShowRecovery(true);
           }
         } catch (e) {
-          console.error('Failed to parse draft:', e);
+          /* error handled silently */
         }
       }
     }

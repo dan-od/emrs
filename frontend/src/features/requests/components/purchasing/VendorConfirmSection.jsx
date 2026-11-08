@@ -68,7 +68,7 @@ const VendorConfirmSection = ({ request, selectedVendor, onVendorSelect }) => {
         const data = res.data;
         setVendors(Array.isArray(data) ? data : data.data || data.vendors || []);
       } catch (err) {
-        console.error('Failed to fetch vendors:', err);
+        /* error handled silently */
       } finally {
         setLoading(false);
       }

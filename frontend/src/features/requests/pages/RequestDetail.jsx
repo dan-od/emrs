@@ -140,7 +140,7 @@ const RequestDetail = () => {
       setShowPurchasingForm(false);
       refresh();
     } catch (err) {
-      console.error('Approval error:', err);
+      /* error handled silently */
       uiStore?.addNotification?.({ type: 'error', message: err.message || 'Failed to approve' });
     }
   };
@@ -153,7 +153,7 @@ const RequestDetail = () => {
       setShowPurchasingForm(false);
       refresh();
     } catch (err) {
-      console.error('Rejection error:', err);
+      /* error handled silently */
       uiStore?.addNotification?.({ type: 'error', message: err.message || 'Failed to reject' });
     }
   };
@@ -164,7 +164,7 @@ const RequestDetail = () => {
       uiStore?.addNotification?.({ type: 'success', message: `Request transferred to ${toDepartment}` });
       refresh();
     } catch (err) {
-      console.error('Transfer error:', err);
+      /* error handled silently */
       uiStore?.addNotification?.({ type: 'error', message: err.message || 'Failed to transfer' });
     }
   };

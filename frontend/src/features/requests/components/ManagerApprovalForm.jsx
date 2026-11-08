@@ -49,7 +49,7 @@ const ManagerApprovalForm = ({ request, onApprove, onReject, isLoading, isOpen, 
         
         setVendors(vendorList);
       } catch (err) {
-        console.error('Failed to fetch vendors:', err);
+        /* error handled silently */
         setVendors([]);
       }
     };

@@ -19,7 +19,7 @@ export const EquipmentSection = memo(({ jobId, equipment = [], onRefresh, canEdi
       await removeEquipment(equipmentId);
       onRefresh?.();
     } catch (err) {
-      console.error('Failed to remove equipment:', err);
+      /* error handled silently */
     }
   };
 

@@ -89,7 +89,7 @@ const EditJob = () => {
       await updateJob(id, payload);
       navigate(`/jobs/${id}`);
     } catch (err) {
-      console.error('Failed to update job:', err);
+      /* error handled silently */
       setError(err.response?.data?.error || 'Failed to update job. Please try again.');
     } finally {
       setLoading(false);

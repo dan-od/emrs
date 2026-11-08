@@ -17,7 +17,7 @@ const v = require('./validation');
 
 router.use(authenticate);
 
-const MANAGERS = ['Super_Admin', 'Admin', 'Operations_Manager', 'Maintenance_Manager'];
+const MANAGERS = ['Super_Admin', 'Admin', 'Operations_Manager', 'Department_Manager', 'Maintenance_Manager'];
 const PURCHASING = ['Super_Admin', 'Admin', 'Purchasing_Manager', 'Purchasing_Staff'];
 
 // ============================================
